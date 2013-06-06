@@ -9,31 +9,41 @@
 
         public bool ExecuteBatch(IEnumerable<IInstallerTask> tasks)
         {
-            var result = false;
             foreach (var task in tasks)
             {
                 task.InstallEnvironment = InstallEnvironment;
             }
-            var lockingTasks = tasks.Where(x => x is ILocking);
+            var lockingTasks = tasks.Where(x => x is ILocking).Select(x => x as ILocking);
             foreach (var task in lockingTasks)
             {
-                var lockingTask = task as ILocking;
-                lockingTask.Lock();
+                task.Lock();
             }
-
+            var result = true;
             try
             {
-                foreach (var task in tasks)
+                var executedTasks = new List<IInstallerTask>();
+                var taskEnumerator = tasks.GetEnumerator();
+                while (result && taskEnumerator.MoveNext())
                 {
+                    var task = taskEnumerator.Current;
                     task.Backup();
                     try
                     {
-                        task.Execute();
-                        result = true;
+                        executedTasks.Add(task);
+                        var taskResult = task.Execute();
+                        result = result && (taskResult || !task.FailOnError);
+                        if (!result)
+                        {
+                            Rollback(executedTasks);
+                        }
                     }
                     catch
                     {
-                        task.Rollback();
+                        if (task.FailOnError)
+                        {
+                            Rollback(executedTasks);
+                        }
+                        throw;
                     }
                 }
             }
@@ -41,11 +51,19 @@
             {
                 foreach (var task in lockingTasks)
                 {
-                    var lockingTask = task as ILocking;
-                    lockingTask.Unlock();
+                    task.Unlock();
                 }
             }
             return result;
+        }
+
+        private void Rollback(IEnumerable<IInstallerTask> executedTasks)
+        {
+            var reversedTasks = executedTasks.Reverse();
+            foreach (var task in reversedTasks)
+            {
+                task.Rollback();
+            }
         }
     }
 }
