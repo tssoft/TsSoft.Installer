@@ -2,11 +2,13 @@
 {
     public interface IInstallerTask
     {
-        public IInstallEnvironment InstallEnvironment { get; set; }
+        IInstallEnvironment InstallEnvironment { get; set; }
+
+        bool FailOnError { get; }
 
         void Backup();
 
-        void Update();
+        bool Execute();
 
         void Rollback();
     }

@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsSoft.Installer", "TsSoft.Installer\TsSoft.Installer.csproj", "{3546A845-1719-434C-9042-E326E7435DD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsSoft.Installer.Test", "TsSoft.Installer.Test\TsSoft.Installer.Test.csproj", "{61F9ADE4-F48E-47B2-8BFC-AB4C5925441C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{3546A845-1719-434C-9042-E326E7435DD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3546A845-1719-434C-9042-E326E7435DD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3546A845-1719-434C-9042-E326E7435DD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61F9ADE4-F48E-47B2-8BFC-AB4C5925441C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61F9ADE4-F48E-47B2-8BFC-AB4C5925441C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61F9ADE4-F48E-47B2-8BFC-AB4C5925441C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61F9ADE4-F48E-47B2-8BFC-AB4C5925441C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

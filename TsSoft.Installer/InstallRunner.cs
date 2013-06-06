@@ -5,18 +5,16 @@
 
     public class InstallRunner
     {
-        public IEnumerable<IInstallerTask> Tasks { get; set; }
-
         public IInstallEnvironment InstallEnvironment { get; set; }
 
-        public bool Update()
+        public bool ExecuteBatch(IEnumerable<IInstallerTask> tasks)
         {
             var result = false;
-            foreach (var task in Tasks)
+            foreach (var task in tasks)
             {
                 task.InstallEnvironment = InstallEnvironment;
             }
-            var lockingTasks = Tasks.Where(x => x is ILocking);
+            var lockingTasks = tasks.Where(x => x is ILocking);
             foreach (var task in lockingTasks)
             {
                 var lockingTask = task as ILocking;
@@ -25,12 +23,12 @@
 
             try
             {
-                foreach (var task in Tasks)
+                foreach (var task in tasks)
                 {
                     task.Backup();
                     try
                     {
-                        task.Update();
+                        task.Execute();
                         result = true;
                     }
                     catch
